@@ -36,7 +36,7 @@ Enrollment.getEnrollments = ([from, to, idop], result) => {
 };
 
 Enrollment.getEnrollmentsByIdcus = (idcus, result) => {
-  let query = "select a.idenrollment, c.optionname, b.opt, a.signUpDate, a.approved, e.name as 'serviceTypeName', f.name as 'providerName', f.adress from enrollments a, options b, option_types c, services d, service_types e, providers f where idop = idoption and b.idot = c.idoptiontypes and c.idserv = d.idservices and e.idservice_type = d.idst and d.idpro = f.idprovider and idcus = " + idcus + " ORDER BY signUpDate desc";
+  let query = "select a.idenrollment, c.optionname, b.opt, a.signUpDate, a.approved, e.name as 'serviceTypeName', f.name as 'providerName', f.adress, a.rating, d.idservices, b.idoption from enrollments a, options b, option_types c, services d, service_types e, providers f where idop = idoption and b.idot = c.idoptiontypes and c.idserv = d.idservices and e.idservice_type = d.idst and d.idpro = f.idprovider and idcus = " + idcus + " ORDER BY signUpDate desc";
   
   sql.query(query, (err, res) => {
     if (err) {
@@ -63,6 +63,34 @@ Enrollment.addEnrollment = ([id, datetime, optionpicked], result) => {
 
 Enrollment.updateEnrollment = ([status, id], result) => {
   let query = 'update enrollments set approved = ' + status + ' where idenrollment = ' + id
+  
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+Enrollment.deleteOne = (id, result) => {
+  let query = `delete from enrollments where idenrollment = ` + id
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("Заявка отменена");
+    result(null, { res: "Заявка отменена" });
+  });
+};
+
+Enrollment.updateRatingValue = ([rating, id], result) => {
+  let query = 'update enrollments set rating = ' + rating + ' where idenrollment = ' + id
   
   sql.query(query, (err, res) => {
     if (err) {

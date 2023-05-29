@@ -6,7 +6,7 @@ const Option = function (option) {
 };
 
 Option.getByServiceId = (id, result) => {
-  let query = "select a.idoptiontypes ,b.idoption, a.optionname, b.opt from option_types a, options b, services c where a.idoptiontypes = b.idot and a.idserv = c.idservices";
+  let query = "select a.idoptiontypes ,b.idoption, a.optionname, b.opt, d.idservice_type, d.name, b.rating, b.rating_number from option_types a, options b, services c, service_types d where a.idoptiontypes = b.idot and a.idserv = c.idservices and c.idst = d.idservice_type";
 
   if (id) {
     query += ` and c.idservices = ${id}`;
@@ -47,5 +47,45 @@ Option.deleteOption = (ido, result) => {
     result(null, res);
   });
 };
+
+Option.getOptionRating = (id, result) => {
+  let query = `select rating from options where idoption = '${id}'`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+Option.updateOptionRating = ([rating, id], result) => {
+  let query = `update options set rating = '${rating}' where idoption = '${id}'`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+Option.updateOptionRatingNumber = (id, result) => {
+  let query = `update options set rating_number = rating_number + 1 where idoption = '${id}'`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 
 module.exports = Option;

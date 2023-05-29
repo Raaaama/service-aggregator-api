@@ -13,5 +13,9 @@ module.exports = (app) => {
 
   router.put("/", Enrollment.update);
 
+  router.post("/delete", Enrollment.delete);
+
+  router.post("/updateRating", Enrollment.updateRating);
+
   app.use("/api/enrollments", router);
 };

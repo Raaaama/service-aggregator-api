@@ -82,4 +82,32 @@ Service.deleteOne = (id, result) => {
   });
 };
 
+Service.getServiceRating = (id, result) => {
+  let query =
+    `select rating from services where idservices = ` +
+    id;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+Service.updateServiceRating = ([rating, id], result) => {
+  let query = `update services set rating = '${rating}' where idservices = '${id}'`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 module.exports = Service;

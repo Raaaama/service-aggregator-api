@@ -12,6 +12,10 @@ module.exports = app => {
     router.post("/", Service.add);
 
     router.post("/delete/", Service.delete);
+
+    router.get("/rating/", Service.getRating);
+
+    router.put("/rating/", Service.updateRating);
   
     app.use('/api/service', router);
   };

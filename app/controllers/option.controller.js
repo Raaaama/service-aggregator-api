@@ -39,3 +39,43 @@ exports.delete = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.getRating = (req, res) => {
+  const id = req.query.id;
+
+  Option.getOptionRating(id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving categories."
+      });
+    else res.send(data);
+  });
+};
+
+exports.updateRating = (req, res) => {
+  const rating = req.body.rating;
+  const id = req.body.id;
+
+  Option.updateOptionRating([rating, id], (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving categories."
+      });
+    else res.send(data);
+  });
+};
+
+exports.updateRatingNumber = (req, res) => {
+  const id = req.body.id;
+
+  Option.updateOptionRatingNumber(id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving categories."
+      });
+    else res.send(data);
+  });
+};

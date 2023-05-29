@@ -79,3 +79,29 @@ exports.update = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.delete = (req, res) => {
+  // console.log(req.body.id)
+  Enrollment.deleteOne(req.body.id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Provider.",
+      });
+    else res.send(data);
+  });
+};
+
+exports.updateRating = (req, res) => {
+  const rating = req.body.rating
+  const id = req.body.id
+
+  Enrollment.updateRatingValue([rating, id], (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving categories."
+      });
+    else res.send(data);
+  });
+};
